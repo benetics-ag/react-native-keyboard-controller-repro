@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  StatusBar,
   StyleSheet,
   TextInput,
   View,
@@ -10,11 +11,17 @@ import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-
 
 
 function Example (): React.JSX.Element {
-  const {top, bottom} = useSafeAreaInsets();
+  const statusBarHeight = StatusBar.currentHeight ?? 0;  // Always 0 on iOS
+  const {top} = useSafeAreaInsets();  // 59 on iOS
 
   return (
-    <SafeAreaView style={styles.safeAreaView} edges={['top' , 'bottom']}>
-      <KeyboardAvoidingView behavior="padding" contentContainerStyle={styles.container} style={styles.content} keyboardVerticalOffset={top + bottom}>
+    <SafeAreaView
+      edges={['bottom', 'left', 'right', 'top']}
+      style={styles.safeContainer}>
+      <KeyboardAvoidingView
+        behavior="height"
+        keyboardVerticalOffset={0}
+        style={styles.content}>
         <View style={styles.inner}>
           <TextInput placeholder="Name" style={styles.textInput}  />
           <Button title="Submit" />
@@ -37,6 +44,9 @@ function App(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   safeAreaView: {
+    flex: 1,
+  },
+  safeContainer: {
     flex: 1,
   },
   content: {
